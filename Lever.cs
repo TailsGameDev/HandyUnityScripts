@@ -12,7 +12,7 @@ public class Lever : Interactable
         originalRotation = transform.eulerAngles;
     }
 
-    public override void Interact()
+    public override void StartInteraction()
     {
         const float TOLERANCE = 1.0f;
         bool isLeverRotated = (transform.eulerAngles - originalRotation).sqrMagnitude > TOLERANCE;

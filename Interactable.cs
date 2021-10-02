@@ -17,5 +17,5 @@ public abstract class Interactable : MonoBehaviour
         GUI.SetActive(false);
     }
 
-    public abstract void Interact();
+    public abstract void StartInteraction();
 }

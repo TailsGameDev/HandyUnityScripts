@@ -22,7 +22,12 @@ public class PlayerInteraction : MonoBehaviour
 
     private Interactable currentInteractable;
 
-    private void Update()
+    protected Interactable CurrentInteractable 
+    { 
+        get => currentInteractable; 
+    }
+
+    protected virtual void Update()
     {
         // Get Interactable from raycast
         RaycastHit raycastHit;
@@ -50,9 +55,16 @@ public class PlayerInteraction : MonoBehaviour
             }
 
             currentInteractable = interactable;
-        }
+        }        
 
-        // Manage Input
+        if (HasInputBeenPressed() && currentInteractable != null)
+        {
+            currentInteractable.StartInteraction();
+        }
+    }
+
+    protected bool HasInputBeenPressed()
+    {
         bool hasInputBeenPressed;
         if (inputType == InputType.MOUSE)
         {
@@ -62,10 +74,6 @@ public class PlayerInteraction : MonoBehaviour
         {
             hasInputBeenPressed = Input.GetButtonDown(interactionInput);
         }
-
-        if (hasInputBeenPressed && currentInteractable != null)
-        {
-            currentInteractable.Interact();
-        }
+        return hasInputBeenPressed;
     }
 }
