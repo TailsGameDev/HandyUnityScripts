@@ -4,6 +4,22 @@ using UnityEngine;
 
 public class PlayerInteraction : MonoBehaviour
 {
+    private enum InputType
+    {
+        MOUSE,
+        KEYBOARD_CONTROLLER,
+    }
+
+    [SerializeField]
+    [Tooltip("Enter the string for the Input. Note in case of mouse buttons, the string will ger Parsed.")]
+    private string interactionInput = null;
+
+    [SerializeField]
+    private InputType inputType = 0;
+
+    [SerializeField]
+    private float raycastMaxDistance = 0.0f;
+
     private Interactable currentInteractable;
 
     private void Update()
@@ -11,10 +27,13 @@ public class PlayerInteraction : MonoBehaviour
         // Get Interactable from raycast
         RaycastHit raycastHit;
         Interactable interactable = null;
-        bool hasRaycastHitSomething = Physics.Raycast(origin: transform.position, direction: transform.forward, out raycastHit, maxDistance: 5.0f);
+        bool hasRaycastHitSomething = Physics.Raycast(origin: transform.position, direction: transform.forward, 
+                                                        out raycastHit, maxDistance: raycastMaxDistance);
         if (hasRaycastHitSomething)
         {
             interactable = raycastHit.collider.GetComponent<Interactable>();
+            
+            // TODO: Display little dot or similar in the point of interest.
         }
 
         // Update Interactable, displaying/hiding interfaces
@@ -34,7 +53,17 @@ public class PlayerInteraction : MonoBehaviour
         }
 
         // Manage Input
-        if (Input.GetButtonDown("Fire1") && currentInteractable != null)
+        bool hasInputBeenPressed;
+        if (inputType == InputType.MOUSE)
+        {
+            hasInputBeenPressed = Input.GetMouseButtonDown(System.Int32.Parse(interactionInput));
+        }
+        else
+        {
+            hasInputBeenPressed = Input.GetButtonDown(interactionInput);
+        }
+
+        if (hasInputBeenPressed && currentInteractable != null)
         {
             currentInteractable.Interact();
         }
