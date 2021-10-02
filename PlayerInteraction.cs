@@ -2,13 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInteraction : MonoBehaviour
+public abstract class PlayerInteraction : MonoBehaviour
 {
     private enum InputType
     {
         MOUSE,
         KEYBOARD_CONTROLLER,
     }
+
+    [SerializeField]
+    private Transform raycastHitPointImage = null;
 
     [SerializeField]
     [Tooltip("Enter the string for the Input. Note in case of mouse buttons, the string will ger Parsed.")]
@@ -37,7 +40,14 @@ public class PlayerInteraction : MonoBehaviour
         if (hasRaycastHitSomething)
         {
             interactable = raycastHit.collider.GetComponent<Interactable>();
-            
+
+            // Position and Rotate raycastEndImage
+            if (raycastHitPointImage != null)
+            {
+                raycastHitPointImage.position = raycastHit.point + (raycastHit.normal * 0.01f);
+                raycastHitPointImage.forward = raycastHit.normal;
+            }
+
             // TODO: Display little dot or similar in the point of interest.
         }
 
@@ -61,6 +71,8 @@ public class PlayerInteraction : MonoBehaviour
         {
             currentInteractable.StartInteraction();
         }
+
+        raycastHitPointImage.gameObject.SetActive( ShouldDisplayRaycastHitPointImage(hasRaycastHitSomething) );
     }
 
     protected bool HasInputBeenPressed()
@@ -76,4 +88,6 @@ public class PlayerInteraction : MonoBehaviour
         }
         return hasInputBeenPressed;
     }
+
+    protected abstract bool ShouldDisplayRaycastHitPointImage(bool hasRaycastHitSomething);
 }
