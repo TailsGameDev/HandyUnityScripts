@@ -6,9 +6,6 @@ using UnityEngine.Events;
 public class Message : MonoBehaviour
 {
     [SerializeField]
-    private Message nextMessage = null;
-
-    [SerializeField]
     private UnityEvent onBegin = null;
 
     [SerializeField]
