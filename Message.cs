@@ -11,13 +11,23 @@ public class Message : MonoBehaviour
     [SerializeField]
     private UnityEvent onBegin = null;
 
+    [SerializeField]
+    private UnityEvent onEnd = null;
+
     private void OnEnable()
     {
         onBegin?.Invoke();
     }
+    private void OnDisable()
+    {
+        onEnd?.Invoke();
+    }
 
     private void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            gameObject.SetActive(false);
+        }
     }
 }
