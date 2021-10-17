@@ -11,6 +11,8 @@ public class ObjectDestroyer : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+            transform.parent = null;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
