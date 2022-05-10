@@ -35,6 +35,10 @@ public class TransformWrapper
             transform.eulerAngles = value;
         }
     }
+    public Quaternion Rotation 
+    {
+        get => transform.rotation;
+    }
 
     public void Rotate(float x, float y, float z)
     {
@@ -54,8 +58,7 @@ public class TransformWrapper
     public void SetParent(TransformWrapper parent, bool worldPositionStays = true)
     {
         // TODO: check if default worldPositionStays should really be true
-        Debug.LogError("Set Parent of: " + transform.gameObject.name + " to " + parent.transform.gameObject.name);
-        transform.SetParent(parent.transform, worldPositionStays: worldPositionStays);
+        transform.SetParent(parent == null? null : parent.transform, worldPositionStays: worldPositionStays);
     }
     public TransformWrapper Parent {
         get {
